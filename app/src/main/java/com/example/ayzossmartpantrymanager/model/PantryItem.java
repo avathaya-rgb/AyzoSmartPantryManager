@@ -9,7 +9,7 @@ public class PantryItem {
 
     public PantryItem() {}
 
-    public PantryItem(long id, String name, double quantity, String expiryDate) {
+    public PantryItem(long id, String name, double quantity,String unit, String expiryDate) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
