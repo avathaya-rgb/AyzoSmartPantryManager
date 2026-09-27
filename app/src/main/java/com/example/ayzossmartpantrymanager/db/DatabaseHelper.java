@@ -219,6 +219,75 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void seedRecipes(SQLiteDatabase db) {
-        // Recipe data goes here - added in the next step
+        addRecipe(db, "Scrambled Eggs on Toast",
+                "1. Whisk eggs with a splash of milk.\n2. Melt butter in a pan, cook eggs on low heat, stirring gently.\n3. Toast the bread and serve eggs on top with salt and pepper.",
+                new Object[][]{{"egg", 2, "unit"}, {"bread", 2, "unit"}, {"butter", 10, "g"}, {"milk", 20, "ml"}});
+
+        addRecipe(db, "Tomato Pasta",
+                "1. Boil pasta until al dente.\n2. Saute garlic in oil, add chopped tomatoes and simmer 10 min.\n3. Toss pasta through the sauce and season.",
+                new Object[][]{{"pasta", 200, "g"}, {"tomato", 3, "unit"}, {"garlic clove", 2, "unit"}, {"olive oil", 15, "ml"}});
+
+        addRecipe(db, "Chicken Stir Fry",
+                "1. Slice chicken and vegetables.\n2. Stir-fry chicken until cooked through.\n3. Add vegetables and soy sauce, cook 5 more minutes.",
+                new Object[][]{{"chicken breast", 300, "g"}, {"bell pepper", 1, "unit"}, {"onion", 1, "unit"}, {"soy sauce", 30, "ml"}});
+
+        addRecipe(db, "Vegetable Omelette",
+                "1. Whisk eggs.\n2. Saute diced vegetables until soft.\n3. Pour eggs over vegetables and cook until set, fold and serve.",
+                new Object[][]{{"egg", 3, "unit"}, {"onion", 1, "unit"}, {"bell pepper", 1, "unit"}, {"cheese", 30, "g"}});
+
+        addRecipe(db, "Rice and Beans",
+                "1. Cook rice according to packet instructions.\n2. Heat beans with onion and garlic.\n3. Serve beans over rice.",
+                new Object[][]{{"rice", 200, "g"}, {"beans", 250, "g"}, {"onion", 1, "unit"}, {"garlic clove", 1, "unit"}});
+
+        addRecipe(db, "Grilled Cheese Sandwich",
+                "1. Butter one side of each bread slice.\n2. Place cheese between slices, butter-side out.\n3. Grill in a pan until golden on both sides.",
+                new Object[][]{{"bread", 2, "unit"}, {"cheese", 50, "g"}, {"butter", 10, "g"}});
+
+        addRecipe(db, "Vegetable Soup",
+                "1. Saute onion, carrot and celery in a pot.\n2. Add stock and simmer 20 minutes.\n3. Season and serve hot.",
+                new Object[][]{{"onion", 1, "unit"}, {"carrot", 2, "unit"}, {"celery", 2, "unit"}, {"vegetable stock", 500, "ml"}});
+
+        addRecipe(db, "Fried Rice",
+                "1. Scramble eggs in a hot pan and set aside.\n2. Fry cold rice with soy sauce and vegetables.\n3. Stir the eggs back through and serve.",
+                new Object[][]{{"rice", 300, "g"}, {"egg", 2, "unit"}, {"soy sauce", 20, "ml"}, {"carrot", 1, "unit"}});
+
+        addRecipe(db, "Tuna Salad",
+                "1. Drain tuna and flake into a bowl.\n2. Mix with mayonnaise, sweetcorn and diced onion.\n3. Serve on its own or with bread.",
+                new Object[][]{{"tuna", 1, "unit"}, {"mayonnaise", 30, "g"}, {"sweetcorn", 50, "g"}, {"onion", 1, "unit"}});
+
+        addRecipe(db, "Pancakes",
+                "1. Whisk flour, egg and milk into a smooth batter.\n2. Melt a little butter in a pan.\n3. Cook spoonfuls of batter until bubbles form, flip and finish cooking.",
+                new Object[][]{{"flour", 150, "g"}, {"egg", 1, "unit"}, {"milk", 200, "ml"}, {"butter", 15, "g"}});
+
+        addRecipe(db, "Garlic Butter Mushrooms",
+                "1. Melt butter in a hot pan.\n2. Add sliced mushrooms and cook until golden.\n3. Stir in chopped garlic, cook 1 more minute and season.",
+                new Object[][]{{"mushroom", 250, "g"}, {"butter", 30, "g"}, {"garlic clove", 2, "unit"}});
+
+        addRecipe(db, "Baked Potato with Cheese",
+                "1. Pierce potato and bake until soft, about 45 minutes.\n2. Cut open and fluff the inside with a fork.\n3. Top with butter and grated cheese.",
+                new Object[][]{{"potato", 1, "unit"}, {"cheese", 40, "g"}, {"butter", 10, "g"}});
+
+        addRecipe(db, "Chicken Noodle Soup",
+                "1. Simmer chicken in stock until cooked, then shred.\n2. Add noodles and carrot, cook until noodles are tender.\n3. Return chicken to the pot and season.",
+                new Object[][]{{"chicken breast", 200, "g"}, {"noodles", 100, "g"}, {"carrot", 1, "unit"}, {"vegetable stock", 600, "ml"}});
+
+        addRecipe(db, "Caprese Salad",
+                "1. Slice tomato and mozzarella.\n2. Arrange alternately on a plate with basil leaves.\n3. Drizzle with olive oil and season.",
+                new Object[][]{{"tomato", 2, "unit"}, {"mozzarella", 125, "g"}, {"basil", 10, "g"}, {"olive oil", 15, "ml"}});
+    }
+    private void addRecipe(SQLiteDatabase db, String name, String steps, Object[][] ingredients){
+            ContentValues rv = new ContentValues();
+            rv.put(COL_R_NAME, name);
+            rv.put(COL_R_STEPS, steps);
+            long recipeId = db.insert(TABLE_RECIPES, null, rv);
+
+            for (Object[] ing : ingredients) {
+                ContentValues iv = new ContentValues();
+                iv.put(COL_RI_RECIPE_ID, recipeId);
+                iv.put(COL_RI_NAME, (String) ing[0]);
+                iv.put(COL_RI_QTY, ((Number) ing[1]).doubleValue());
+                iv.put(COL_RI_UNIT, (String) ing[2]);
+                db.insert(TABLE_RECIPE_INGREDIENTS, null, iv);
+            }
     }
 }
